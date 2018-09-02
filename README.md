@@ -3,8 +3,8 @@
 
 ### Dependencies
 
-’pip install Flask’
+```pip install Flask```
 
-’pip install flask-sse’
+```pip install flask-sse```
 
 

@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Python Flask Bucket List App</title>
+ 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="../static/css/signup.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header">        
+        <h3 class="text-muted">Übersicht</h3>
+      </div>
+
+      <div class="jumbotron">
+        <p>Anzahl der Spieler: {{ players }}</p>   
+        <p>Punkte: {{ points }}</p>  
+                
+        <a href="/game"><button id="btnPlay" class="btn btn-lg btn-primary btn-block" type="button">Spiel starten</button>
+        <a href="/"><button id="btnReset" class="btn btn-lg btn-primary btn-block" type="button">Spiel abbrechen</button>
+      </form>
+      </div>
+
+      
+
+      <footer class="footer">
+        <p>&copy; WirJun Cooperation</p>
+      </footer>
+
+    </div>
+  </body>
+</html>
+

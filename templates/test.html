@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+
+
+<script>
+var json =  [{"points": "224", "shot": 0}, {"points": "220", "shot": 0}, {"points": "231", "shot": 0}, {"points": "225", "shot": 0}, {"points": "222", "shot": 0}, {"points": "223", "shot": 0}, {"points": "217", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}, {"points": "234", "shot": 0}]
+var html = "";
+//iterating through all the item one by one.
+json.forEach(function(val) {
+  //getting all the keys in val (current array item)
+  var keys = Object.keys(val);
+  //assigning HTML string to the variable html
+  html += "<div class = 'cat'>";
+  //iterating through all the keys presented in val (current array item)
+  keys.forEach(function(key) {
+    //appending more HTML string with key and value aginst that key;
+    html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
+  });
+  //final HTML sting is appending to close the DIV element.
+  html += "</div><br>";
+});
+
+document.body.innerHTML = html;
+
+</script>
+
+</body>
+</html>
+
+
+

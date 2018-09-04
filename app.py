@@ -2,31 +2,32 @@ from flask import Flask, render_template, json, request, session, redirect, Resp
 from flask_sse import sse
 import time
 from random import randint
+import json, ast
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
-def get_message():    
-    shot = randint(0, 9)    
-    playersPoints = session.get('playersPoints')
-    #print playersPoints
-    player =  int(session.get('player'))
+def get_message(shotNumber, currentPlayer):
+    shot = randint(0, 9)
+    data = session.get('data')
+    numberPlayers =  len(data)
     
     #print player
-    newPoints = int(playersPoints[player]) - shot
+    newPoints = int(data[currentPlayer]['points']) - shot
     #print newPoints
     time.sleep(2.0)
     if newPoints == 0:
         return redirect(url_for('winner'))
     elif newPoints > 0:
-        playersPoints[player] = str(newPoints)
-        session['playersPoints'] = playersPoints
-        return newPoints
+        data[currentPlayer]['points'] = str(newPoints)
+        session['data'] = data
+        return data
     else:
-        return playersPoints[player]
+        return data
 
 @app.route('/')
 def main():
+    session.clear()
     return render_template('index.html')
 
 
@@ -53,10 +54,12 @@ def preGame():
 def game():
     players = session.get('players')
     
-    player = []
+    data = []
+    
     for x in range(0, int(players)):
-        player.append(session.get('points'))
-    session['playersPoints'] = player    
+        data.append({'points': session.get('points'), 'shot': 0})
+    session['data'] = data
+    print data
     return render_template('game.html')
 
 @app.route('/winner')
@@ -74,9 +77,9 @@ def stream():
                     # wait for source data to be available, then push it
                     session['shot'] = x
                     session['player'] = y
-                    yield 'data: %s\ndata: %d \ndata: %d\n\n' % (format(get_message()), x+1, y+1)
+                    yield 'data: %s\n\n' % (json.dumps(get_message(x, y)))
                                         
     return Response(stream_with_context (eventStream()), mimetype="text/event-stream")                        
 
 if __name__ == "__main__":
-    app.run(port=5002)
+    app.run(port=5001)

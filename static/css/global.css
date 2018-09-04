@@ -1,0 +1,12 @@
+button#btnSignUp, button#btnPlay, button#btnReset {
+    margin: auto;
+    margin-top: 15px;
+    width: 150px;
+    padding: 10px;
+    text-align: center;
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+

@@ -18,26 +18,37 @@
       </div>
 
       <div class="jumbotron">
-        <span>Spieler  <span> <span id="player"></span><br>
-        <span>Wurf <span> <span id="shot"></span> <span> von 2</span><br>
         <span>Aktuelle Punkte: <span> <span id="points"></span>
       </div>
       
       <script type="text/javascript">
-        var points = document.getElementById("points");
-        var shot = document.getElementById("shot");
-        var player = document.getElementById("player");
-        
+        var data = document.getElementById("points");        
         var evtSrc = new EventSource("/stream");
-
         evtSrc.onmessage = function(e) {
-          var fields = e.data.split('\n');
-          points.innerHTML = fields[0];
-          shot.innerHTML = fields[1];
-          player.innerHTML = fields[2];
-          
+          var json = JSON.parse(e.data);
+          var html = ""; 
+          json.forEach(function(val) {
+            //getting all the keys in val (current array item)
+            var keys = Object.keys(val);
+            //assigning HTML string to the variable html
+            html += "<div class = 'jumbotron'>";
+            //iterating through all the keys presented in val (current array item)
+            keys.forEach(function(key) {
+              //appending more HTML string with key and value aginst that key;
+              html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
+            }); 
+            //final HTML sting is appending to close the DIV element.
+            html += "</div><br>";
+          });
+
+          document.getElementById("points").innerHTML = html;
           
         };
+
+        
+        
+        
+        
       </script>
       
 

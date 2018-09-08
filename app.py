@@ -48,8 +48,8 @@ def signUp():
     
 @app.route('/pregame')
 def preGame():
-    players = session.get('players')
-    points = session.get('points')
+    players = int(session['players'])
+    points = session['points']
     return render_template('pregame.html', players=players, points=points)
 
 @app.route('/game')
@@ -68,7 +68,6 @@ def game():
 @app.route('/winner')
 def winner():
     winner = request.args.get('winner')
-    print winner
     return render_template('winner.html', winner=winner)
 
 

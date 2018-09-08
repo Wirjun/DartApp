@@ -25,9 +25,11 @@
         <h3>DartsApp Pro</h3>
         <form class="form-signin">
         <label for="inputPlayers" class="sr-only">Anzahl Spieler</label>
-        <input type="number" min="1" step="1" name="inputPlayers" id="inputPlayers" class="form-control" placeholder="Spieler" pattern="[0-9\s]{1,16}" required autofocus>
+        <input type="number" min="1" step="1" value="1" name="inputPlayers" id="inputPlayers" class="form-control" placeholder="Spieler">
+        
         <label for="inputPoints" class="sr-only">Punkte angeben</label>
-        <input type="number" min="101" step="100" name="inputPoints" id="inputPoints" class="form-control" placeholder="Punkte" pattern="[0-9\s]{1,16}" required autofocus>      
+        <input type="number" min="101" step="100" value="101" name="inputPoints" id="inputPoints" class="form-control" placeholder="Punkte">  
+        
         
         <a href="/pregame"><button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Fortfahren</button>
       </form>

@@ -13,10 +13,12 @@ def get_message(shotNumber, currentPlayer):
     numberPlayers =  len(data)
     
     #print player
+    
     newPoints = int(data[currentPlayer]['points']) - shot
-    #print newPoints
-    time.sleep(2.0)
+    data[currentPlayer]['shot'] = shotNumber
+    time.sleep(0.5)
     if newPoints == 0:
+        print newPoints
         return redirect(url_for('winner'))
     elif newPoints > 0:
         data[currentPlayer]['points'] = str(newPoints)
@@ -62,9 +64,13 @@ def game():
     print data
     return render_template('game.html')
 
+
 @app.route('/winner')
 def winner():
-    return render_template('winner.html')
+    winner = request.args.get('winner')
+    print winner
+    return render_template('winner.html', winner=winner)
+
 
     
 @app.route('/stream')
@@ -76,10 +82,14 @@ def stream():
                 for x in range(0, 2):
                     # wait for source data to be available, then push it
                     session['shot'] = x
-                    session['player'] = y
-                    yield 'data: %s\n\n' % (json.dumps(get_message(x, y)))
+                    session['player'] = y 
+                    try:
+                        yield 'data: %s\n\n' % (json.dumps(get_message(x, y)))
+                    except TypeError as e:
+                        yield 'data: %s%s\n\n' % (json.dumps("Redirect"), json.dumps(y))
+                    
                                         
     return Response(stream_with_context (eventStream()), mimetype="text/event-stream")                        
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(port=5000)

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="../static/css/signup.css" rel="stylesheet">
   </head>
 
   <body>
@@ -25,9 +24,16 @@
         var data = document.getElementById("points");        
         var evtSrc = new EventSource("/stream");
         evtSrc.onmessage = function(e) {
+          if (e.data.includes("Redirect")){
+            var temp = e.data;
+            temp = temp.replace("Redirect", "");
+            temp = temp.replace('\""','');
+            window.location.href = "/winner?winner="+temp;
+          }
           var json = JSON.parse(e.data);
           var html = ""; 
           json.forEach(function(val) {
+           
             //getting all the keys in val (current array item)
             var keys = Object.keys(val);
             //assigning HTML string to the variable html
@@ -44,6 +50,8 @@
           document.getElementById("points").innerHTML = html;
           
         };
+        
+          
 
         
         

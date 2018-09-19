@@ -15,6 +15,7 @@
       <div class="header">        
         <h3 class="text-muted">Übersicht</h3>
       </div>
+      <div id="startText">Zum Start Next-Button betätigen</div>
 
       <div class="jumbotron">
         <span>Aktuelle Punkte: <span> <span id="points"></span>
@@ -29,6 +30,13 @@
             temp = temp.replace("Redirect", "");
             temp = temp.replace('\""','');
             window.location.href = "/winner?winner="+temp;
+          }
+          else if (e.data.includes("Start")){
+             e.data = e.data.replace("Start", "");
+             document.getElementById('startText').style.display='block';
+          }
+          else if (e.data.includes("Continue")){
+             e.data = e.data.replace("Continue", "");
           }
           var json = JSON.parse(e.data);
           var html = ""; 

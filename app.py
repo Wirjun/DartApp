@@ -2,21 +2,33 @@ from flask import Flask, render_template, json, request, session, redirect, Resp
 from flask_sse import sse
 import time
 from random import randint
-import json, ast
+import json, ast, serial
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
+ser = serial.Serial('/dev/ttyACM0',)
+
+
+def getSignal(data):
+    while True:
+        shot = ser.readline()
+
+        for dat in data["data"]:
+            if dat["signal"] == shot:
+                return dat["points"]
 
 def get_message(shotNumber, currentPlayer):
-    shot = randint(0, 9)
+    with open('dart.json') as f:
+        temp = json.load(f)
+    
+    shot = int(getSignal(temp));
+    if shot == 999:
+        return 999
     data = session.get('data')
-    numberPlayers =  len(data)
-    
-    #print player
-    
+    numberPlayers =  len(data)    
+    #print player    
     newPoints = int(data[currentPlayer]['points']) - shot
     data[currentPlayer]['shot'] = shotNumber
-    time.sleep(0.5)
     if newPoints == 0:
         print newPoints
         return redirect(url_for('winner'))
@@ -76,6 +88,12 @@ def winner():
 def stream():
     def eventStream():
         while True:
+            temp = get_message(0,0)
+            if temp == 999:
+                yield 'data: %s\n%s\n\n' % (json.dumps(session['data']),json.dumps("Start"))
+                break
+            
+        while True:
             players = session.get('players')
             for y in range(0, int(players)):
                 for x in range(0, 2):
@@ -83,9 +101,17 @@ def stream():
                     session['shot'] = x
                     session['player'] = y 
                     try:
-                        yield 'data: %s\n\n' % (json.dumps(get_message(x, y)))
+                        data = get_message(x,y)
+                        
+                        if data == 999:
+                            yield 'data: %s\n%s\n\n' % (json.dumps(session['data']),json.dumps("Continue"))
+                            break
+                        else:
+                            yield 'data: %s\n\n' % (json.dumps(get_message(x, y)))
+                    
                     except TypeError as e:
                         yield 'data: %s%s\n\n' % (json.dumps("Redirect"), json.dumps(y))
+                        
                     
                                         
     return Response(stream_with_context (eventStream()), mimetype="text/event-stream")                        

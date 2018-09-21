@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="../static/css/global.css" rel="stylesheet">
   </head>
 
   <body>
@@ -18,7 +19,7 @@
       <div id="startText">Zum Start Next-Button betätigen</div>
 
       <div class="jumbotron">
-        <span>Aktuelle Punkte: <span> <span id="points"></span>
+        <span id="points"></span>
       </div>
       
       <script type="text/javascript">
@@ -33,7 +34,6 @@
           }
           else if (e.data.includes("Start")){
              e.data = e.data.replace("Start", "");
-             document.getElementById('startText').style.display='block';
           }
           else if (e.data.includes("Continue")){
              e.data = e.data.replace("Continue", "");
@@ -45,17 +45,30 @@
             //getting all the keys in val (current array item)
             var keys = Object.keys(val);
             //assigning HTML string to the variable html
-            html += "<div class = 'jumbotron'>";
+            wrapper = "<div class = 'wrapper0' >";
+            keys.forEach(function(key) {
+               if (key == "current" && val[key] == 1){
+                   wrapper = "<div class = 'wrapper1' style='background-color:gray'>";
+               }            
+            });
+            
+            
+            html += wrapper;
             //iterating through all the keys presented in val (current array item)
             keys.forEach(function(key) {
-              //appending more HTML string with key and value aginst that key;
-              html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
+              //appending more HTML string with key and value aginst that key;          
+              if (key == "shot"){
+                  html += "<strong>" + key + "</strong>: " + val[key] + " von 1" + "<br>";
+              } else {
+                  html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
+              }
             }); 
             //final HTML sting is appending to close the DIV element.
             html += "</div><br>";
           });
 
           document.getElementById("points").innerHTML = html;
+          document.getElementById("startText").style.display="none";
           
         };
         

@@ -10,3 +10,6 @@ button#btnSignUp, button#btnPlay, button#btnReset {
     -moz-appearance: none;
 }
 
+.wrapper1 {
+    background-color: #ff0;
+}

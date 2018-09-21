@@ -20,14 +20,20 @@ def getSignal(data):
 def get_message(shotNumber, currentPlayer):
     with open('dart.json') as f:
         temp = json.load(f)
+        
+    data = session.get('data')
+    numberPlayers =  len(data)   
+    for x in range(0, numberPlayers):
+        data[x]['current'] = 0
+    
+    data[currentPlayer]['current'] = 1
     
     shot = int(getSignal(temp));
     if shot == 999:
         return 999
-    data = session.get('data')
-    numberPlayers =  len(data)    
-    #print player    
-    newPoints = int(data[currentPlayer]['points']) - shot
+    
+    newPoints = int(data[currentPlayer]['points']) - shot    
+    
     data[currentPlayer]['shot'] = shotNumber
     if newPoints == 0:
         print newPoints
@@ -71,7 +77,7 @@ def game():
     data = []
     
     for x in range(0, int(players)):
-        data.append({'points': session.get('points'), 'shot': 0})
+        data.append({'points': session.get('points'), 'shot': 0, 'current': 0})
     session['data'] = data
     print data
     return render_template('game.html')
